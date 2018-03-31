@@ -1,3 +1,10 @@
+/*
+@Author: Sonu Gupta
+
+@Purpose: This file handles the routines of creation of CSR.
+*/
+
+
 #include "X509_req.h"
 #include "openssl/applink.c"
 #include<boost/algorithm/string/split.hpp>
@@ -67,21 +74,6 @@ bool CX509_req::setPublicKey(EC_KEY* ecKey)
   return true;
 }
 
-X509_REQ* CX509_req:: ReadCertificate(std::string strCSRName)
-{
-  FILE *fp;
-  X509_REQ* x509_req;
-
-  /* read in the request */
-  if (!(fp = fopen(strCSRName.c_str(), "r")))
-    std::cout<<"Error reading request file";
-  if (!(x509_req = PEM_read_X509_REQ(fp, NULL, NULL, NULL)))
-    std::cout<<"Error reading request in file";
-  fclose(fp);
-
-  return x509_req;
-}
-
 // writing to .der file
 bool CX509_req::WriteDERCertificate(std::string strFilename)
 {
@@ -106,9 +98,9 @@ bool CX509_req::WriteCSR()
   return true;
 }
 
-X509_REQ* CX509_req::ReadCSR()
+X509_REQ* CX509_req::ReadCSR(std::string strFileName)
 {
-  return reinterpret_cast<X509_REQ*>(ReadCertificate(0));
+  return reinterpret_cast<X509_REQ*>(ReadCertificate(strFileName.c_str()));
 }
 
 //delme:
@@ -149,13 +141,13 @@ void CX509_req::GenerateCertificate(boost::variant<X509_REQ*, X509*> certificate
   boost::apply_visitor(f, certificate);
 }
 
-void* CX509_req::ReadCertificate(int)
+void* CX509_req::ReadCertificate(std::string strCertificateName)
 {
   FILE *fp;
   X509_REQ* x509_req;
 
   /* read in the request */
-  if (!(fp = fopen(CSR_FILE, "r")))
+  if (!(fp = fopen(strCertificateName.c_str(), "r")))
     std::cout << "Error reading request file";
   if (!(x509_req = PEM_read_X509_REQ(fp, NULL, NULL, NULL)))
     std::cout << "Error reading request in file";

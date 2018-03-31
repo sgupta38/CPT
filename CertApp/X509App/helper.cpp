@@ -1,3 +1,9 @@
+/*
+@Author: Sonu Gupta
+
+@Purpose: This file has helper routines used across code.
+*/
+
 #include "helper.h"
 #include <iostream>
 

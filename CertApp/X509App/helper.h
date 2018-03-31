@@ -1,3 +1,9 @@
+/*
+@Author: Sonu Gupta
+
+@Purpose: This file has helper routines used across code.
+*/
+
 #ifndef _HELPER_
 #define _HELPER_
 

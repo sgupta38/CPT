@@ -1,3 +1,9 @@
+/*
+@Author: Sonu Gupta
+
+@Purpose: This file handles the routines of creation of CSR.
+*/
+
 #ifndef _X509_REQ_H_
 #define _X509_REQ_H_
 
@@ -15,7 +21,7 @@ class CX509_req : public IX509_minimal, public Chelper
 
   // interface routines
   void GenerateCertificate(boost::variant<X509_REQ*, X509*> cert) override;
-  void* ReadCertificate(int) override;
+  void* ReadCertificate(std::string strCertificateName) override;
 
 public:
   CX509_req() :m_x509_req{ X509_REQ_new() }, m_x509_name{ X509_REQ_get_subject_name(m_x509_req) }, m_public_key{ EVP_PKEY_new() }{}
@@ -23,10 +29,9 @@ public:
 
   // certificate function
   bool WriteCSR();
-  X509_REQ* ReadCSR();
+  X509_REQ* ReadCSR(std::string strFileName);
   bool setPublicKey(EC_KEY* ecKey);
   void SetSubjectData(std::string data);
-  X509_REQ* ReadCertificate(std::string strCSRName);
   bool WriteDERCertificate(std::string strFilename);
   EC_KEY* getEC_Key(std::string strPublicKey, int CurveType, int asn1_flag);
   std::vector<unsigned char> CX509_req::DecodeSignature(std::string strSignature);
