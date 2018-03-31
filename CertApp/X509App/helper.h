@@ -13,6 +13,7 @@ class Chelper
 public:
   int base64Decode(std::string strBase64data, std::vector<unsigned char>& outData);
   void hashData(unsigned char* strdata, std::map<unsigned char*, int> outData);
+
 };
 
 #endif

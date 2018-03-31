@@ -18,6 +18,7 @@ enum dataSize
 {
   PUB_KEY_LEN = 65,
   COORDINATE_SIZE = 32,
+  MAX_PATH = 260
 };
 
 // Functor
@@ -42,13 +43,6 @@ public:
 class IX509_minimal
 {
 public:
-  virtual void SetCountryName(std::string strCountryName) = 0;
-  virtual void SetStateName(std::string strName) = 0;
-  virtual void SetLocalityName(std::string strLocalityName) = 0;
-  virtual void SetOrganizationName(std::string strOrganizationName) = 0;
-  virtual void SetOrganizationalUnitName(std::string strOrganizationalUnitName) = 0;
-  virtual void SetCommonName(std::string strCommonName) = 0;
-
   virtual void GenerateCertificate(boost::variant<X509_REQ*, X509*>) = 0;
   virtual void* ReadCertificate(int) = 0;
 };
@@ -58,7 +52,7 @@ class SSLException
 public:
  void what()
   {
-   array<char, 260> gszBuffer;
+   array<char, MAX_PATH> gszBuffer;
    ERR_error_string(ERR_peek_last_error(), gszBuffer.data());
    std::cout<<gszBuffer.data()<<endl;
   }

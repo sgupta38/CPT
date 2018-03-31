@@ -1,53 +1,22 @@
 #include "X509_req.h"
 #include "openssl/applink.c"
+#include<boost/algorithm/string/split.hpp>
+#include<boost/algorithm/string/constants.hpp>
+#include<boost/algorithm/string/classification.hpp>
 
+using namespace boost::algorithm;
 
 CX509_req::~CX509_req()
 {
-  // todo: exception here
-
   if (m_x509_req)
     X509_REQ_free(m_x509_req);
 }
 
-void CX509_req::SetCountryName(std::string strCountryName)
+void CX509_req::SetSubjectData(std::string data)
 {
-  m_countryName = strCountryName;
-}
-
-void CX509_req::SetStateName(std::string strStateName)
-{
-  m_StateName = strStateName;
-}
-
-void CX509_req::SetLocalityName(std::string strLocalityName)
-{
-  m_LocalityName = strLocalityName;
-}
-
-void CX509_req::SetOrganizationName(std::string strOrganizationName)
-{
-  m_OrganizationName = strOrganizationName;
-}
-
-void CX509_req::SetOrganizationalUnitName(std::string strOrganizationalUnitName)
-{
-  m_OrganizationalUnitName = strOrganizationalUnitName;
-}
-
-void CX509_req::SetCommonName(std::string strCommonName)
-{
-  m_commonName = strCommonName;
-}
-
-void CX509_req::SetSubjectData()
-{
-  X509_NAME_add_entry_by_txt(m_x509_name, "C", MBSTRING_ASC, (unsigned char*)m_countryName.c_str(), -1, -1, 0);
-  X509_NAME_add_entry_by_txt(m_x509_name, "ST", MBSTRING_ASC, (unsigned char*)m_StateName.c_str(), -1, -1, 0);
-  X509_NAME_add_entry_by_txt(m_x509_name, "L",  MBSTRING_ASC, (unsigned char*)m_LocalityName.c_str(), -1, -1, 0);
-  X509_NAME_add_entry_by_txt(m_x509_name, "OU", MBSTRING_ASC, (unsigned char*)m_OrganizationalUnitName.c_str(), -1, -1, 0);
-  X509_NAME_add_entry_by_txt(m_x509_name, "CN", MBSTRING_ASC, (unsigned char*)m_commonName.c_str(), -1, -1, 0);
-  X509_NAME_add_entry_by_txt(m_x509_name, "O", MBSTRING_ASC, (unsigned char*)m_OrganizationName.c_str(), -1, -1, 0);
+  auto subjectData = parseSubjectData(data);
+  for (auto i = 1; i < subjectData.size(); i += 2)
+    X509_NAME_add_entry_by_txt(m_x509_name, subjectData[i].data(), MBSTRING_ASC, (unsigned char*)subjectData[i+1].data(), -1, -1, 0);
 }
 
 EC_KEY* CX509_req::getEC_Key(std::string strPublicKey, int CurveType, int asn1_flag)
@@ -193,6 +162,13 @@ void* CX509_req::ReadCertificate(int)
   fclose(fp);
 
   return x509_req;
+}
 
+std::vector<std::string> CX509_req:: parseSubjectData(std::string data)
+{
+  // add _SCL_SECURE_NO_WARNINGS flag in preprocessor.
+  std::vector<std::string> subjectData;
+  split(subjectData, data, is_any_of("/="), token_compress_off);
+  return subjectData;
 }
 
