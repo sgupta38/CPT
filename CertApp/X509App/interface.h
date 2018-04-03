@@ -35,12 +35,13 @@ enum dataSize
   MAX_PATH = 260
 };
 
-// Functor
+// Functors
 class CertficateGenerator :public boost::static_visitor<>{
 public:
+  std::string strFilename;
   void operator()(X509_REQ* x509_req) const
   {
-    auto out = BIO_new_file(CSR_FILE, "w");
+    auto out = BIO_new_file(strFilename.c_str(), "w");
     if (!PEM_write_bio_X509_REQ(out, x509_req))
     {
       //todo: error handling
@@ -50,7 +51,7 @@ public:
 
   void operator()(X509* x509) const
   {
-    auto out = BIO_new_file(CER_FILE, "w");
+    auto out = BIO_new_file(strFilename.c_str(), "w");
     if (!PEM_write_bio_X509(out, x509))
     {
       //todo: error handling
@@ -62,7 +63,7 @@ public:
 class IX509_minimal
 {
 public:
-  virtual void GenerateCertificate(boost::variant<X509_REQ*, X509*>) = 0;
+  virtual void GenerateCertificate(boost::variant<X509_REQ*, X509*>, std::string strFileName) = 0;
   virtual void* ReadCertificate(std::string strCertificateName) = 0;
 };
 

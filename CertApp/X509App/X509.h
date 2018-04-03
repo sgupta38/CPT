@@ -18,7 +18,7 @@ class CX509 : public IX509_minimal, public Chelper
   EVP_PKEY *m_root_private_key = nullptr;
 
   // interface routines
-  void GenerateCertificate(boost::variant<X509_REQ*, X509*> cert) override;
+  void GenerateCertificate(boost::variant<X509_REQ*, X509*> cert, std::string strFileName) override;
   void* ReadCertificate(std::string strFileName) override;
   X509* ReadRootCA(std::string strFileName);
   EVP_PKEY* ReadRootPrivateKey();
@@ -29,7 +29,7 @@ public:
 
   void readCSR(std::string strFileName);
   bool VerifyCSR();
-  void CreateCertificate();
+  void CreateCertificate(std::string strFileName);
   void SetVersion(int iVersion);
   void SetSubjectData();
   void SetIssuerName();

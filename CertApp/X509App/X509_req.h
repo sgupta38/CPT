@@ -20,7 +20,7 @@ class CX509_req : public IX509_minimal, public Chelper
   std::vector<std::string> parseSubjectData(std::string);
 
   // interface routines
-  void GenerateCertificate(boost::variant<X509_REQ*, X509*> cert) override;
+  void GenerateCertificate(boost::variant<X509_REQ*, X509*> cert, std::string strFileName) override;
   void* ReadCertificate(std::string strCertificateName) override;
 
 public:
@@ -28,7 +28,7 @@ public:
   ~CX509_req();
 
   // certificate function
-  bool WriteCSR();
+  bool WriteCSR(std::string strFileName);
   X509_REQ* ReadCSR(std::string strFileName);
   bool setPublicKey(EC_KEY* ecKey);
   void SetSubjectData(std::string data);

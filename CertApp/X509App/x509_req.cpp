@@ -5,8 +5,8 @@
 */
 
 
+#include "interface.h"
 #include "X509_req.h"
-#include "openssl/applink.c"
 #include<boost/algorithm/string/split.hpp>
 #include<boost/algorithm/string/constants.hpp>
 #include<boost/algorithm/string/classification.hpp>
@@ -92,9 +92,9 @@ bool CX509_req::WriteDERCertificate(std::string strFilename)
   return true;
 }
 
-bool CX509_req::WriteCSR()
+bool CX509_req::WriteCSR(std::string strFileName)
 {
-  GenerateCertificate(m_x509_req);
+  GenerateCertificate(m_x509_req, strFileName);
   return true;
 }
 
@@ -135,9 +135,10 @@ void CX509_req::setSignature(std::vector<unsigned char> vtSignature, long versio
   m_x509_req->sig_alg->parameter->type = V_ASN1_NULL;
 }
 
-void CX509_req::GenerateCertificate(boost::variant<X509_REQ*, X509*> certificate)
+void CX509_req::GenerateCertificate(boost::variant<X509_REQ*, X509*> certificate, std::string strFileName)
 {
   CertficateGenerator f;
+  f.strFilename = std::move(strFileName);
   boost::apply_visitor(f, certificate);
 }
 

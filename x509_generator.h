@@ -12,6 +12,9 @@
 #include <openssl/err.h>
 #include <openssl/pem.h>
 
+#define FILE_CERTIFICATE "cert.pem"
+#define FILE_PRIVATEKEY "key.pem"
+
 enum class Type{
   PRIVATE_KEY = 0,
   CERTIFICATE

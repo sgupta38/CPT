@@ -5,8 +5,9 @@
 */
 
 
-#include "X509.h"
 #include "interface.h"
+#include "X509.h"
+
 
 CX509::~CX509()
 {
@@ -86,9 +87,9 @@ void CX509::SetSubjectData()
 }
 
 
-void CX509::CreateCertificate()
+void CX509::CreateCertificate(std::string strFileName)
 {
-  GenerateCertificate(m_x509);
+  GenerateCertificate(m_x509, strFileName);
 }
 
 void CX509::SetVersion(int iVersion)
@@ -155,9 +156,10 @@ bool CX509::SignTheCertificate( )
   return true;
 }
 
-void CX509::GenerateCertificate(boost::variant<X509_REQ*, X509*> cert)
+void CX509::GenerateCertificate(boost::variant<X509_REQ*, X509*> cert, std::string strFileName)
 {
   CertficateGenerator f;
+  f.strFilename = strFileName;
   boost::apply_visitor(f, cert);
 }
 

@@ -69,7 +69,7 @@ bool CX509::WriteToFile(Type type)
   // writing private key to file
   if (Type::PRIVATE_KEY == type)
   {
-    f = fopen("key.pem", "wb");
+    f = fopen(FILE_PRIVATEKEY, "wb");
     if (nullptr != f)
     {
       retValue = PEM_write_PrivateKey(f,
@@ -90,7 +90,7 @@ bool CX509::WriteToFile(Type type)
   // writing certificate to file
   else if (Type::CERTIFICATE == type)
   {
-    f = fopen("cert.csr", "wb");
+    f = fopen(FILE_CERTIFICATE, "wb");
     if (nullptr != f)
     {
       retValue = PEM_write_X509(f, m_x509);
