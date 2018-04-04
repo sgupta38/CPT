@@ -9,22 +9,12 @@
 
 #include "interface.h"
 #include "helper.h"
+//#include "sslexcept.h"
 
 class CX509_req : public IX509_minimal, public Chelper
 {
-  X509_REQ* m_x509_req = nullptr;
-  X509_NAME* m_x509_name = nullptr;
-  EVP_PKEY* m_public_key = nullptr;
-  SSLException error;
-
-  std::vector<std::string> parseSubjectData(std::string);
-
-  // interface routines
-  void GenerateCertificate(boost::variant<X509_REQ*, X509*> cert, std::string strFileName) override;
-  void* ReadCertificate(std::string strCertificateName) override;
-
 public:
-  CX509_req() :m_x509_req{ X509_REQ_new() }, m_x509_name{ X509_REQ_get_subject_name(m_x509_req) }, m_public_key{ EVP_PKEY_new() }{}
+  CX509_req();
   ~CX509_req();
 
   // certificate function
@@ -36,7 +26,18 @@ public:
   EC_KEY* getEC_Key(std::string strPublicKey, int CurveType, int asn1_flag);
   std::vector<unsigned char> CX509_req::DecodeSignature(std::string strSignature);
   void setSignature(std::vector<unsigned char> vtSignature, long version, int algorithm);
-
   void PrintLastError();
+
+private:
+  std::vector<std::string> parseSubjectData(std::string);
+
+  // interface routines
+  void GenerateCertificate(boost::variant<X509_REQ*, X509*> cert, std::string strFileName) override;
+  void* ReadCertificate(std::string strCertificateName) override;
+
+  X509_REQ* m_x509_req;
+  X509_NAME* m_x509_name;
+  EVP_PKEY* m_public_key;
+  //SSLException error;
 };
 #endif _X509_H_

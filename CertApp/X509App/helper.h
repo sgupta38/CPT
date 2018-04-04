@@ -9,10 +9,6 @@
 
 #include <vector>
 #include <map>
-#include <openssl/x509.h>
-#include <openssl/rsa.h>
-#include <openssl/pem.h>
-#include <openssl/err.h>
 
 class Chelper
 {

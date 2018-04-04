@@ -12,19 +12,8 @@
 
 class CX509 : public IX509_minimal, public Chelper
 {
-  X509 *m_x509 = nullptr, *m_root_x509 = nullptr;
-  X509_REQ *m_x509_req = nullptr;
-  X509_NAME *m_x509_name = nullptr;
-  EVP_PKEY *m_root_private_key = nullptr;
-
-  // interface routines
-  void GenerateCertificate(boost::variant<X509_REQ*, X509*> cert, std::string strFileName) override;
-  void* ReadCertificate(std::string strFileName) override;
-  X509* ReadRootCA(std::string strFileName);
-  EVP_PKEY* ReadRootPrivateKey();
-
 public:
-  CX509() :m_x509{ X509_new() }, m_root_x509{ ReadRootCA(CA_FILE) }, m_root_private_key{ ReadRootPrivateKey()}{}
+  CX509();
   ~CX509();
 
   void readCSR(std::string strFileName);
@@ -37,6 +26,19 @@ public:
   void SetPublicKey();
   void SetExtension(); //todo
   bool SignTheCertificate();
+
+private:
+  // interface routines
+  void GenerateCertificate(boost::variant<X509_REQ*, X509*> cert, std::string strFileName) override;
+  void* ReadCertificate(std::string strFileName) override;
+  X509* ReadRootCA(std::string strFileName);
+  EVP_PKEY* ReadRootPrivateKey();
+
+  X509 *m_x509, *m_root_x509;
+  X509_REQ *m_x509_req;
+  X509_NAME *m_x509_name;
+  EVP_PKEY *m_root_private_key;
+
 };
 
 #endif _X509_H_

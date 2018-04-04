@@ -5,13 +5,16 @@
 */
 
 
-#include "interface.h"
 #include "X509_req.h"
 #include<boost/algorithm/string/split.hpp>
 #include<boost/algorithm/string/constants.hpp>
 #include<boost/algorithm/string/classification.hpp>
 
 using namespace boost::algorithm;
+
+CX509_req::CX509_req() :m_x509_req{ X509_REQ_new() }, m_x509_name{ X509_REQ_get_subject_name(m_x509_req) }, m_public_key{ EVP_PKEY_new() }
+{
+}
 
 CX509_req::~CX509_req()
 {

@@ -5,8 +5,11 @@
 */
 
 
-#include "interface.h"
 #include "X509.h"
+
+CX509::CX509() :m_x509{ X509_new() }, m_root_x509{ ReadRootCA(CA_FILE) }, m_root_private_key{ ReadRootPrivateKey() }
+{
+}
 
 
 CX509::~CX509()

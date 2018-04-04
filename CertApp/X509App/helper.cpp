@@ -6,6 +6,10 @@
 
 #include "helper.h"
 #include <iostream>
+#include <openssl/x509.h>
+#include <openssl/rsa.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
 
 int  Chelper::base64Decode(std::string strBase64data, std::vector<unsigned char>& outData)
 {
@@ -28,6 +32,8 @@ int  Chelper::base64Decode(std::string strBase64data, std::vector<unsigned char>
   BIO_free_all(bmem);
 
   outData.resize(retVal);
+
+  return retVal;
 }
 
 void Chelper::hashData(unsigned char* strdata, std::map<unsigned char*, int> outData)
