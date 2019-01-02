@@ -66,7 +66,7 @@ void CDevClass::ParseAndInitializeCSR()
   map<string, string> subjectData;
 
   // todo: input-> subjectData, Public Key
-  subjectData = parseSubjectData("/C=US/L=Milwaukee/O=JCI/OU=BE/CN=00:11:22:33:44:55:66/S=WI\0");
+  subjectData = parseSubjectData("/C=US/L=MM/O=EDGE/OU=BE/CN=00:11:22:33:44:55:66/S=WI\0");
   name = X509_get_subject_name(m_newcert); //self-signed: thus, name of issuer = subject name
 
   addEntryToCertificate(name, subjectData);
