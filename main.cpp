@@ -23,7 +23,7 @@ main()
   map<string, string> subjectData;
 
   // todo: input-> subjectData, Public Key
-  subjectData = devClass.parseSubjectData("/C=US/L=Milwaukee/O=JCI/OU=BE/CN=00:11:22:33:44:55:66/S=WI\0");
+  subjectData = devClass.parseSubjectData("/C=US/L=MM/O=EDGE/OU=BE/CN=00:11:22:33:44:55:66/S=WI\0");
   certificate.GenerateCertificate(subjectData);
   res = certificate.writeToDisk();
   if (!res)
